@@ -4,41 +4,61 @@ import TypeFilter from "./components/TypeFilter";
 
 function App() {
   const allProperties = propertiesData.properties;
+
   const [selectedType, setSelectedType] = useState("Any");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
   const visibleProperties = useMemo(() => {
-    if (selectedType === "Any") return allProperties;
-    return allProperties.filter((p) => p.type === selectedType);
-  }, [allProperties, selectedType]);
+    return allProperties.filter((property) => {
+      const matchesType =
+        selectedType === "Any" || property.type === selectedType;
+
+      const min = minPrice === "" ? null : Number(minPrice);
+      const max = maxPrice === "" ? null : Number(maxPrice);
+
+      const matchesMin = min === null || property.price >= min;
+      const matchesMax = max === null || property.price <= max;
+
+      return matchesType && matchesMin && matchesMax;
+    });
+  }, [allProperties, selectedType, minPrice, maxPrice]);
 
   return (
     <div style={{ padding: "20px" }}>
       <h1>Estate App</h1>
 
-      <TypeFilter value={selectedType} onChangeType={setSelectedType} />
+      <TypeFilter
+        typeValue={selectedType}
+        minValue={minPrice}
+        maxValue={maxPrice}
+        onTypeChange={setSelectedType}
+        onMinChange={setMinPrice}
+        onMaxChange={setMaxPrice}
+      />
 
       <p>
         Showing <strong>{visibleProperties.length}</strong> property/properties
       </p>
 
-      {visibleProperties.map((p) => (
+      {visibleProperties.map((property) => (
         <div
-          key={p.id}
+          key={property.id}
           style={{
             border: "1px solid #ccc",
             padding: "12px",
             marginBottom: "12px",
           }}
         >
-          <h2>{p.type}</h2>
+          <h2>{property.type}</h2>
           <p>
-            <strong>Location:</strong> {p.location}
+            <strong>Location:</strong> {property.location}
           </p>
           <p>
-            <strong>Bedrooms:</strong> {p.bedrooms}
+            <strong>Bedrooms:</strong> {property.bedrooms}
           </p>
           <p>
-            <strong>Price:</strong> £{p.price.toLocaleString()}
+            <strong>Price:</strong> £{property.price.toLocaleString()}
           </p>
         </div>
       ))}
