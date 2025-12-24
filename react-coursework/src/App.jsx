@@ -8,21 +8,40 @@ function App() {
   const [selectedType, setSelectedType] = useState("Any");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [minBeds, setMinBeds] = useState("");
+  const [maxBeds, setMaxBeds] = useState("");
+  const [postcodeArea, setPostcodeArea] = useState("");
 
   const visibleProperties = useMemo(() => {
+    const pc = postcodeArea.trim().toLowerCase();
+
     return allProperties.filter((property) => {
       const matchesType =
         selectedType === "Any" || property.type === selectedType;
 
-      const min = minPrice === "" ? null : Number(minPrice);
-      const max = maxPrice === "" ? null : Number(maxPrice);
+      const minP = minPrice === "" ? null : Number(minPrice);
+      const maxP = maxPrice === "" ? null : Number(maxPrice);
+      const matchesMinPrice = minP === null || property.price >= minP;
+      const matchesMaxPrice = maxP === null || property.price <= maxP;
 
-      const matchesMin = min === null || property.price >= min;
-      const matchesMax = max === null || property.price <= max;
+      const minB = minBeds === "" ? null : Number(minBeds);
+      const maxB = maxBeds === "" ? null : Number(maxBeds);
+      const matchesMinBeds = minB === null || property.bedrooms >= minB;
+      const matchesMaxBeds = maxB === null || property.bedrooms <= maxB;
 
-      return matchesType && matchesMin && matchesMax;
+      const matchesPostcode =
+        pc === "" || property.location.toLowerCase().includes(pc);
+
+      return (
+        matchesType &&
+        matchesMinPrice &&
+        matchesMaxPrice &&
+        matchesMinBeds &&
+        matchesMaxBeds &&
+        matchesPostcode
+      );
     });
-  }, [allProperties, selectedType, minPrice, maxPrice]);
+  }, [allProperties, selectedType, minPrice, maxPrice, minBeds, maxBeds, postcodeArea]);
 
   return (
     <div style={{ padding: "20px" }}>
@@ -30,11 +49,17 @@ function App() {
 
       <TypeFilter
         typeValue={selectedType}
-        minValue={minPrice}
-        maxValue={maxPrice}
+        minPriceValue={minPrice}
+        maxPriceValue={maxPrice}
+        minBedsValue={minBeds}
+        maxBedsValue={maxBeds}
+        postcodeValue={postcodeArea}
         onTypeChange={setSelectedType}
-        onMinChange={setMinPrice}
-        onMaxChange={setMaxPrice}
+        onMinPriceChange={setMinPrice}
+        onMaxPriceChange={setMaxPrice}
+        onMinBedsChange={setMinBeds}
+        onMaxBedsChange={setMaxBeds}
+        onPostcodeChange={setPostcodeArea}
       />
 
       <p>

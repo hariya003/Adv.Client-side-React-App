@@ -1,15 +1,21 @@
 function TypeFilter({
   typeValue,
-  minValue,
-  maxValue,
+  minPriceValue,
+  maxPriceValue,
+  minBedsValue,
+  maxBedsValue,
+  postcodeValue,
   onTypeChange,
-  onMinChange,
-  onMaxChange,
+  onMinPriceChange,
+  onMaxPriceChange,
+  onMinBedsChange,
+  onMaxBedsChange,
+  onPostcodeChange,
 }) {
   return (
     <div style={{ marginBottom: "16px" }}>
       <label>
-        Filter by type:{" "}
+        Type:{" "}
         <select value={typeValue} onChange={(e) => onTypeChange(e.target.value)}>
           <option value="Any">Any</option>
           <option value="House">House</option>
@@ -23,8 +29,8 @@ function TypeFilter({
         Min price:{" "}
         <input
           type="number"
-          value={minValue}
-          onChange={(e) => onMinChange(e.target.value)}
+          value={minPriceValue}
+          onChange={(e) => onMinPriceChange(e.target.value)}
           placeholder="e.g. 200000"
         />
       </label>
@@ -35,9 +41,45 @@ function TypeFilter({
         Max price:{" "}
         <input
           type="number"
-          value={maxValue}
-          onChange={(e) => onMaxChange(e.target.value)}
+          value={maxPriceValue}
+          onChange={(e) => onMaxPriceChange(e.target.value)}
           placeholder="e.g. 800000"
+        />
+      </label>
+
+      <br /><br />
+
+      <label>
+        Min bedrooms:{" "}
+        <input
+          type="number"
+          value={minBedsValue}
+          onChange={(e) => onMinBedsChange(e.target.value)}
+          placeholder="e.g. 2"
+        />
+      </label>
+
+      <br /><br />
+
+      <label>
+        Max bedrooms:{" "}
+        <input
+          type="number"
+          value={maxBedsValue}
+          onChange={(e) => onMaxBedsChange(e.target.value)}
+          placeholder="e.g. 4"
+        />
+      </label>
+
+      <br /><br />
+
+      <label>
+        Postcode area:{" "}
+        <input
+          type="text"
+          value={postcodeValue}
+          onChange={(e) => onPostcodeChange(e.target.value)}
+          placeholder="e.g. BR5"
         />
       </label>
     </div>
