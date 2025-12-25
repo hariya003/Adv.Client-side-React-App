@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import propertiesData from "./data/properties.json";
 import TypeFilter from "./components/TypeFilter";
+import ListingView from "./components/ListingView";
 
 function App() {
   const allProperties = propertiesData.properties;
@@ -11,6 +12,7 @@ function App() {
   const [minBeds, setMinBeds] = useState("");
   const [maxBeds, setMaxBeds] = useState("");
   const [postcodeArea, setPostcodeArea] = useState("");
+  const [activeListing, setActiveListing] = useState(null);
 
   const visibleProperties = useMemo(() => {
     const pc = postcodeArea.trim().toLowerCase();
@@ -41,7 +43,28 @@ function App() {
         matchesPostcode
       );
     });
-  }, [allProperties, selectedType, minPrice, maxPrice, minBeds, maxBeds, postcodeArea]);
+  }, [
+    allProperties,
+    selectedType,
+    minPrice,
+    maxPrice,
+    minBeds,
+    maxBeds,
+    postcodeArea,
+  ]);
+
+  function returnToResults() {
+    setActiveListing(null);
+  }
+
+  if (activeListing) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <h1>Estate App</h1>
+        <ListingView listing={activeListing} onReturn={returnToResults} />
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: "20px" }}>
@@ -85,6 +108,10 @@ function App() {
           <p>
             <strong>Price:</strong> £{property.price.toLocaleString()}
           </p>
+
+          <button type="button" onClick={() => setActiveListing(property)}>
+            View Listing
+          </button>
         </div>
       ))}
     </div>
