@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import propertiesData from "./data/properties.json";
 import TypeFilter from "./components/TypeFilter";
 import ListingView from "./components/ListingView";
+import SavedList from "./components/SavedList";
 
 function App() {
   const allProperties = propertiesData.properties;
@@ -12,7 +13,11 @@ function App() {
   const [minBeds, setMinBeds] = useState("");
   const [maxBeds, setMaxBeds] = useState("");
   const [postcodeArea, setPostcodeArea] = useState("");
+
   const [activeListing, setActiveListing] = useState(null);
+
+  const [savedItems, setSavedItems] = useState([]);
+  const [isSavedViewOpen, setIsSavedViewOpen] = useState(false);
 
   const visibleProperties = useMemo(() => {
     const pc = postcodeArea.trim().toLowerCase();
@@ -53,15 +58,67 @@ function App() {
     postcodeArea,
   ]);
 
-  function returnToResults() {
+  function openSavedView() {
+    setIsSavedViewOpen(true);
     setActiveListing(null);
+  }
+
+  function backToSearch() {
+    setIsSavedViewOpen(false);
+    setActiveListing(null);
+  }
+
+  function openListing(item) {
+    setActiveListing(item);
+    setIsSavedViewOpen(false);
+  }
+
+  function saveListing(item) {
+    const alreadySaved = savedItems.some((x) => x.id === item.id);
+    if (!alreadySaved) {
+      setSavedItems([...savedItems, item]);
+    }
+  }
+
+  function removeSaved(id) {
+    setSavedItems(savedItems.filter((x) => x.id !== id));
+  }
+
+  function isSaved(id) {
+    return savedItems.some((x) => x.id === id);
+  }
+
+  if (isSavedViewOpen) {
+    return (
+      <SavedList
+        items={savedItems}
+        onRemove={removeSaved}
+        onOpenListing={openListing}
+        onBack={backToSearch}
+      />
+    );
   }
 
   if (activeListing) {
     return (
       <div style={{ padding: "20px" }}>
         <h1>Estate App</h1>
-        <ListingView listing={activeListing} onReturn={returnToResults} />
+
+        <button onClick={openSavedView} style={{ marginBottom: "12px" }}>
+          Saved ({savedItems.length})
+        </button>
+
+        <ListingView listing={activeListing} onReturn={backToSearch} />
+
+        <div style={{ marginTop: "12px" }}>
+          <button
+            type="button"
+            onClick={() => saveListing(activeListing)}
+            disabled={isSaved(activeListing.id)}
+          >
+            {isSaved(activeListing.id) ? "Saved ✅" : "❤️ Save"}
+          </button>
+        </div>
       </div>
     );
   }
@@ -69,6 +126,10 @@ function App() {
   return (
     <div style={{ padding: "20px" }}>
       <h1>Estate App</h1>
+
+      <button onClick={openSavedView} style={{ marginBottom: "12px" }}>
+        Saved ({savedItems.length})
+      </button>
 
       <TypeFilter
         typeValue={selectedType}
@@ -111,6 +172,15 @@ function App() {
 
           <button type="button" onClick={() => setActiveListing(property)}>
             View Listing
+          </button>
+
+          <button
+            type="button"
+            onClick={() => saveListing(property)}
+            style={{ marginLeft: "10px" }}
+            disabled={isSaved(property.id)}
+          >
+            {isSaved(property.id) ? "Saved ✅" : "❤️ Save"}
           </button>
         </div>
       ))}
