@@ -32,4 +32,86 @@
                 "year":2022
             }
         }
+        ,
+        {
+        "id": "prop3",
+        "type": "House",
+        "bedrooms": 4,
+        "price": 665000,
+        "tenure": "Freehold",
+        "description": "Well presented four bedroom family home situated close to local schools, bus routes and commuter links. The accommodation includes a bright reception room, separate dining area and a fitted kitchen with access to the rear garden. Upstairs offers four bedrooms and a family bathroom. Further benefits include double glazing, gas central heating and off-street parking...",
+        "location": "Station Road, Bromley BR1",
+        "picture": "images/prop3pic1small.jpg",
+        "url": "properties/prop3.html",
+        "added": {
+            "month": "February",
+            "day": 9,
+            "year": 2023
+        }
+        },
+        {
+        "id": "prop4",
+        "type": "Flat",
+        "bedrooms": 1,
+        "price": 289950,
+        "tenure": "Leasehold",
+        "description": "A modern one bedroom apartment set within a well maintained development, ideally located for local amenities and transport. The property features an open plan living/kitchen area, a double bedroom and a contemporary bathroom. Additional benefits include secure entry system and good storage...",
+        "location": "Camden Road, London NW1",
+        "picture": "images/prop4pic1small.jpg",
+        "url": "properties/prop4.html",
+        "added": {
+            "month": "April",
+            "day": 18,
+            "year": 2023
+        }
+        },
+        {
+        "id": "prop5",
+        "type": "House",
+        "bedrooms": 2,
+        "price": 435000,
+        "tenure": "Freehold",
+        "description": "Charming two bedroom house located within easy reach of shops, parks and local transport. The property offers a reception room, fitted kitchen and a private rear garden. To the first floor are two bedrooms and a bathroom. A great option for first time buyers and downsizers...",
+        "location": "Manor Way, Beckenham BR3",
+        "picture": "images/prop5pic1small.jpg",
+        "url": "properties/prop5.html",
+        "added": {
+            "month": "August",
+            "day": 3,
+            "year": 2023
+        }
+        },
+        {
+        "id": "prop6",
+        "type": "Flat",
+        "bedrooms": 3,
+        "price": 515000,
+        "tenure": "Leasehold",
+        "description": "Spacious three bedroom apartment presented in good order throughout. The accommodation comprises a generous reception room, fitted kitchen, three bedrooms and bathroom. The property further benefits from lift access and residents parking (where available) and is ideally positioned for commuter routes...",
+        "location": "Riverside Quarter, Manchester M1",
+        "picture": "images/prop6pic1small.jpg",
+        "url": "properties/prop6.html",
+        "added": {
+            "month": "October",
+            "day": 11,
+            "year": 2024
+        }
+        },
+        {
+        "id": "prop7",
+        "type": "House",
+        "bedrooms": 5,
+        "price": 895000,
+        "tenure": "Freehold",
+        "description": "Substantial five bedroom detached home offering versatile living space. The property includes multiple reception rooms, a large kitchen/dining space and generous bedrooms arranged over two floors. Outside offers driveway parking and a landscaped garden. An ideal family home in a sought-after location...",
+        "location": "Oak View, Leeds LS1",
+        "picture": "images/prop7pic1small.jpg",
+        "url": "properties/prop7.html",
+        "added": {
+            "month": "November",
+            "day": 20,
+            "year": 2024
+        }
+        }
+
 ]}
