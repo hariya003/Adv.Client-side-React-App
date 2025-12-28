@@ -15,7 +15,6 @@ function App() {
   const [postcodeArea, setPostcodeArea] = useState("");
 
   const [activeListing, setActiveListing] = useState(null);
-
   const [savedItems, setSavedItems] = useState([]);
   const [isSavedViewOpen, setIsSavedViewOpen] = useState(false);
 
@@ -74,8 +73,7 @@ function App() {
   }
 
   function saveListing(item) {
-    const alreadySaved = savedItems.some((x) => x.id === item.id);
-    if (!alreadySaved) {
+    if (!savedItems.some((x) => x.id === item.id)) {
       setSavedItems([...savedItems, item]);
     }
   }
@@ -112,7 +110,6 @@ function App() {
 
         <div style={{ marginTop: "12px" }}>
           <button
-            type="button"
             onClick={() => saveListing(activeListing)}
             disabled={isSaved(activeListing.id)}
           >
@@ -129,6 +126,20 @@ function App() {
 
       <button onClick={openSavedView} style={{ marginBottom: "12px" }}>
         Saved ({savedItems.length})
+      </button>
+
+      <button
+        onClick={() => {
+          setSelectedType("Any");
+          setMinPrice("");
+          setMaxPrice("");
+          setMinBeds("");
+          setMaxBeds("");
+          setPostcodeArea("");
+        }}
+        style={{ marginLeft: "10px", marginBottom: "12px" }}
+      >
+        Clear Filters
       </button>
 
       <TypeFilter
@@ -155,27 +166,42 @@ function App() {
           key={property.id}
           style={{
             border: "1px solid #ccc",
-            padding: "12px",
-            marginBottom: "12px",
+            padding: "14px",
+            marginBottom: "14px",
           }}
         >
-          <h2>{property.type}</h2>
-          <p>
-            <strong>Location:</strong> {property.location}
-          </p>
-          <p>
-            <strong>Bedrooms:</strong> {property.bedrooms}
-          </p>
-          <p>
-            <strong>Price:</strong> £{property.price.toLocaleString()}
+          <h2 style={{ marginBottom: "6px" }}>{property.type}</h2>
+
+          <p style={{ fontSize: "18px", fontWeight: "bold", margin: "0 0 6px" }}>
+            £{property.price.toLocaleString()}
           </p>
 
-          <button type="button" onClick={() => setActiveListing(property)}>
+          <p style={{ margin: "0 0 6px" }}>
+            <strong>Bedrooms:</strong> {property.bedrooms} {" | "}
+            <strong>Tenure:</strong> {property.tenure}
+          </p>
+
+          <p style={{ margin: "0 0 6px" }}>
+            <strong>Location:</strong> {property.location}
+          </p>
+
+          <p style={{ margin: "0 0 10px" }}>
+            <strong>Added:</strong> {property.added.month}{" "}
+            {property.added.day}, {property.added.year}
+          </p>
+
+          <p style={{ margin: "0 0 12px" }}>
+            {String(property.description)
+              .replace(/<br\s*\/?>/gi, " ")
+              .slice(0, 160)}
+            ...
+          </p>
+
+          <button onClick={() => openListing(property)}>
             View Listing
           </button>
 
           <button
-            type="button"
             onClick={() => saveListing(property)}
             style={{ marginLeft: "10px" }}
             disabled={isSaved(property.id)}
