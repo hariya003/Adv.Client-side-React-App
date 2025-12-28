@@ -2,7 +2,7 @@ import {
   DropdownList,
   NumberPicker,
   DatePicker,
-  Input
+  Combobox
 } from "react-widgets";
 
 function TypeFilter({
@@ -25,6 +25,7 @@ function TypeFilter({
 }) {
   return (
     <div style={{ marginBottom: "16px" }}>
+      < br/>
       <label>Property Type</label>
       <DropdownList
         data={["Any", "House", "Flat"]}
@@ -55,18 +56,17 @@ function TypeFilter({
       <br /><br />
 
       <label>Location / Postcode</label>
-      <Input
+      <Combobox
+        data={[]}
         value={postcodeValue}
-        onChange={(e) => onPostcodeChange(e.target.value)}
+        onChange={onPostcodeChange}
+        placeholder="Enter postcode or area"
       />
 
       <br /><br />
 
       <label>Added After</label>
-      <DatePicker
-        value={addedAfterValue}
-        onChange={onAddedAfterChange}
-      />
+      <DatePicker value={addedAfterValue} onChange={onAddedAfterChange} />
 
       <br /><br />
 

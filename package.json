@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "react": "^19.2.3",
-    "react-widgets": "^5.8.6",
-    "widgets": "^0.3.4"
-  }
-}

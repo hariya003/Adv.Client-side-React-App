@@ -7,7 +7,6 @@ import SavedList from "./components/SavedList";
 function App() {
   const allProperties = propertiesData.properties;
 
-  // ✅ react-widgets friendly state (NumberPicker => number|null, DatePicker => Date|null)
   const [selectedType, setSelectedType] = useState("Any");
   const [minPrice, setMinPrice] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
@@ -16,124 +15,62 @@ function App() {
   const [postcodeArea, setPostcodeArea] = useState("");
   const [addedAfter, setAddedAfter] = useState(null);
 
-  // ✅ “Search button” behaviour (apply filters only when clicked)
-  const [appliedFilters, setAppliedFilters] = useState({
-    selectedType: "Any",
-    minPrice: null,
-    maxPrice: null,
-    minBeds: null,
-    maxBeds: null,
-    postcodeArea: "",
-    addedAfter: null,
-  });
-
+  const [filters, setFilters] = useState({});
   const [activeListing, setActiveListing] = useState(null);
   const [savedItems, setSavedItems] = useState([]);
-  const [isSavedViewOpen, setIsSavedViewOpen] = useState(false);
+  const [showSaved, setShowSaved] = useState(false);
 
   const visibleProperties = useMemo(() => {
-    const pc = appliedFilters.postcodeArea.trim().toLowerCase();
-
-    const monthToIndex = {
-      January: 0,
-      February: 1,
-      March: 2,
-      April: 3,
-      May: 4,
-      June: 5,
-      July: 6,
-      August: 7,
-      September: 8,
-      October: 9,
-      November: 10,
-      December: 11,
+    const monthMap = {
+      January: 0, February: 1, March: 2, April: 3,
+      May: 4, June: 5, July: 6, August: 7,
+      September: 8, October: 9, November: 10, December: 11
     };
 
-    return allProperties.filter((property) => {
-      const matchesType =
-        appliedFilters.selectedType === "Any" ||
-        property.type === appliedFilters.selectedType;
+    return allProperties.filter((p) => {
+      if (filters.type && filters.type !== "Any" && p.type !== filters.type)
+        return false;
 
-      const matchesMinPrice =
-        appliedFilters.minPrice == null || property.price >= appliedFilters.minPrice;
+      if (filters.minPrice != null && p.price < filters.minPrice)
+        return false;
 
-      const matchesMaxPrice =
-        appliedFilters.maxPrice == null || property.price <= appliedFilters.maxPrice;
+      if (filters.maxPrice != null && p.price > filters.maxPrice)
+        return false;
 
-      const matchesMinBeds =
-        appliedFilters.minBeds == null || property.bedrooms >= appliedFilters.minBeds;
+      if (filters.minBeds != null && p.bedrooms < filters.minBeds)
+        return false;
 
-      const matchesMaxBeds =
-        appliedFilters.maxBeds == null || property.bedrooms <= appliedFilters.maxBeds;
+      if (filters.maxBeds != null && p.bedrooms > filters.maxBeds)
+        return false;
 
-      const matchesPostcode =
-        pc === "" || property.location.toLowerCase().includes(pc);
+      if (
+        filters.postcode &&
+        !p.location.toLowerCase().includes(filters.postcode.toLowerCase())
+      )
+        return false;
 
-      const matchesAddedAfter = (() => {
-        if (!appliedFilters.addedAfter) return true;
+      if (filters.addedAfter) {
+        const m = monthMap[p.added.month];
+        const d = new Date(p.added.year, m, p.added.day);
+        if (d < filters.addedAfter) return false;
+      }
 
-        const mIndex = monthToIndex[property.added.month];
-        if (mIndex === undefined) return true;
-
-        const propDate = new Date(property.added.year, mIndex, property.added.day);
-        return propDate >= appliedFilters.addedAfter;
-      })();
-
-      return (
-        matchesType &&
-        matchesMinPrice &&
-        matchesMaxPrice &&
-        matchesMinBeds &&
-        matchesMaxBeds &&
-        matchesPostcode &&
-        matchesAddedAfter
-      );
+      return true;
     });
-  }, [allProperties, appliedFilters]);
+  }, [allProperties, filters]);
 
-  function openSavedView() {
-    setIsSavedViewOpen(true);
-    setActiveListing(null);
-  }
-
-  function backToSearch() {
-    setIsSavedViewOpen(false);
-    setActiveListing(null);
-  }
-
-  function openListing(item) {
-    setActiveListing(item);
-    setIsSavedViewOpen(false);
-  }
-
-  function saveListing(item) {
-    if (!savedItems.some((x) => x.id === item.id)) {
-      setSavedItems([...savedItems, item]);
-    }
-  }
-
-  function removeSaved(id) {
-    setSavedItems(savedItems.filter((x) => x.id !== id));
-  }
-
-  function isSaved(id) {
-    return savedItems.some((x) => x.id === id);
-  }
-
-  // ✅ Search button applies current UI state into appliedFilters
   function handleSearch() {
-    setAppliedFilters({
-      selectedType,
+    setFilters({
+      type: selectedType,
       minPrice,
       maxPrice,
       minBeds,
       maxBeds,
-      postcodeArea,
-      addedAfter,
+      postcode: postcodeArea,
+      addedAfter
     });
   }
 
-  // ✅ Clear button resets UI state AND appliedFilters
   function handleClear() {
     setSelectedType("Any");
     setMinPrice(null);
@@ -142,49 +79,37 @@ function App() {
     setMaxBeds(null);
     setPostcodeArea("");
     setAddedAfter(null);
-
-    setAppliedFilters({
-      selectedType: "Any",
-      minPrice: null,
-      maxPrice: null,
-      minBeds: null,
-      maxBeds: null,
-      postcodeArea: "",
-      addedAfter: null,
-    });
+    setFilters({});
   }
 
-  if (isSavedViewOpen) {
+  function saveListing(p) {
+    if (!savedItems.some((x) => x.id === p.id)) {
+      setSavedItems([...savedItems, p]);
+    }
+  }
+
+  if (showSaved) {
     return (
       <SavedList
         items={savedItems}
-        onRemove={removeSaved}
-        onOpenListing={openListing}
-        onBack={backToSearch}
+        onRemove={(id) =>
+          setSavedItems(savedItems.filter((x) => x.id !== id))
+        }
+        onOpenListing={(p) => {
+          setActiveListing(p);
+          setShowSaved(false);
+        }}
+        onBack={() => setShowSaved(false)}
       />
     );
   }
 
   if (activeListing) {
     return (
-      <div style={{ padding: "20px" }}>
-        <h1>Estate App</h1>
-
-        <button onClick={openSavedView} style={{ marginBottom: "12px" }}>
-          Saved ({savedItems.length})
-        </button>
-
-        <ListingView listing={activeListing} onReturn={backToSearch} />
-
-        <div style={{ marginTop: "12px" }}>
-          <button
-            onClick={() => saveListing(activeListing)}
-            disabled={isSaved(activeListing.id)}
-          >
-            {isSaved(activeListing.id) ? "Saved ✅" : "❤️ Save"}
-          </button>
-        </div>
-      </div>
+      <ListingView
+        listing={activeListing}
+        onReturn={() => setActiveListing(null)}
+      />
     );
   }
 
@@ -192,15 +117,8 @@ function App() {
     <div style={{ padding: "20px" }}>
       <h1>Estate App</h1>
 
-      <button onClick={openSavedView} style={{ marginBottom: "12px" }}>
+      <button onClick={() => setShowSaved(true)}>
         Saved ({savedItems.length})
-      </button>
-
-      <button
-        onClick={handleClear}
-        style={{ marginLeft: "10px", marginBottom: "12px" }}
-      >
-        Clear Filters
       </button>
 
       <TypeFilter
@@ -222,54 +140,18 @@ function App() {
         onClear={handleClear}
       />
 
-      <p>
-        Showing <strong>{visibleProperties.length}</strong> property/properties
-      </p>
+      <p>Showing {visibleProperties.length} properties</p>
 
-      {visibleProperties.map((property) => (
-        <div
-          key={property.id}
-          style={{
-            border: "1px solid #ccc",
-            padding: "14px",
-            marginBottom: "14px",
-          }}
-        >
-          <h2 style={{ marginBottom: "6px" }}>{property.type}</h2>
+      {visibleProperties.map((p) => (
+        <div key={p.id} style={{ border: "1px solid #ccc", padding: "12px", marginBottom: "12px" }}>
+          <h2>{p.type}</h2>
+          <p>£{p.price.toLocaleString()}</p>
+          <p>{p.bedrooms} bedrooms</p>
+          <p>{p.location}</p>
 
-          <p style={{ fontSize: "18px", fontWeight: "bold", margin: "0 0 6px" }}>
-            £{property.price.toLocaleString()}
-          </p>
-
-          <p style={{ margin: "0 0 6px" }}>
-            <strong>Bedrooms:</strong> {property.bedrooms} {" | "}
-            <strong>Tenure:</strong> {property.tenure}
-          </p>
-
-          <p style={{ margin: "0 0 6px" }}>
-            <strong>Location:</strong> {property.location}
-          </p>
-
-          <p style={{ margin: "0 0 10px" }}>
-            <strong>Added:</strong> {property.added.month} {property.added.day},{" "}
-            {property.added.year}
-          </p>
-
-          <p style={{ margin: "0 0 12px" }}>
-            {String(property.description)
-              .replace(/<br\s*\/?>/gi, " ")
-              .slice(0, 160)}
-            ...
-          </p>
-
-          <button onClick={() => openListing(property)}>View Listing</button>
-
-          <button
-            onClick={() => saveListing(property)}
-            style={{ marginLeft: "10px" }}
-            disabled={isSaved(property.id)}
-          >
-            {isSaved(property.id) ? "Saved ✅" : "❤️ Save"}
+          <button onClick={() => setActiveListing(p)}>View</button>
+          <button onClick={() => saveListing(p)} style={{ marginLeft: "10px" }}>
+            ❤️ Save
           </button>
         </div>
       ))}
