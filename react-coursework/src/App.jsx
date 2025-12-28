@@ -13,6 +13,7 @@ function App() {
   const [minBeds, setMinBeds] = useState("");
   const [maxBeds, setMaxBeds] = useState("");
   const [postcodeArea, setPostcodeArea] = useState("");
+  const [addedAfter, setAddedAfter] = useState(""); // YYYY-MM-DD from <input type="date" />
 
   const [activeListing, setActiveListing] = useState(null);
   const [savedItems, setSavedItems] = useState([]);
@@ -20,6 +21,23 @@ function App() {
 
   const visibleProperties = useMemo(() => {
     const pc = postcodeArea.trim().toLowerCase();
+
+    const monthToIndex = {
+      January: 0,
+      February: 1,
+      March: 2,
+      April: 3,
+      May: 4,
+      June: 5,
+      July: 6,
+      August: 7,
+      September: 8,
+      October: 9,
+      November: 10,
+      December: 11,
+    };
+
+    const afterDate = addedAfter ? new Date(addedAfter) : null;
 
     return allProperties.filter((property) => {
       const matchesType =
@@ -38,13 +56,24 @@ function App() {
       const matchesPostcode =
         pc === "" || property.location.toLowerCase().includes(pc);
 
+      const matchesAddedAfter = (() => {
+        if (!afterDate) return true;
+
+        const mIndex = monthToIndex[property.added.month];
+        if (mIndex === undefined) return true; // fail-safe: if month text is unexpected, don't hide items
+
+        const propDate = new Date(property.added.year, mIndex, property.added.day);
+        return propDate >= afterDate;
+      })();
+
       return (
         matchesType &&
         matchesMinPrice &&
         matchesMaxPrice &&
         matchesMinBeds &&
         matchesMaxBeds &&
-        matchesPostcode
+        matchesPostcode &&
+        matchesAddedAfter
       );
     });
   }, [
@@ -55,6 +84,7 @@ function App() {
     minBeds,
     maxBeds,
     postcodeArea,
+    addedAfter,
   ]);
 
   function openSavedView() {
@@ -136,6 +166,7 @@ function App() {
           setMinBeds("");
           setMaxBeds("");
           setPostcodeArea("");
+          setAddedAfter("");
         }}
         style={{ marginLeft: "10px", marginBottom: "12px" }}
       >
@@ -149,12 +180,14 @@ function App() {
         minBedsValue={minBeds}
         maxBedsValue={maxBeds}
         postcodeValue={postcodeArea}
+        addedAfterValue={addedAfter}
         onTypeChange={setSelectedType}
         onMinPriceChange={setMinPrice}
         onMaxPriceChange={setMaxPrice}
         onMinBedsChange={setMinBeds}
         onMaxBedsChange={setMaxBeds}
         onPostcodeChange={setPostcodeArea}
+        onAddedAfterChange={setAddedAfter}
       />
 
       <p>
@@ -186,8 +219,8 @@ function App() {
           </p>
 
           <p style={{ margin: "0 0 10px" }}>
-            <strong>Added:</strong> {property.added.month}{" "}
-            {property.added.day}, {property.added.year}
+            <strong>Added:</strong> {property.added.month} {property.added.day},{" "}
+            {property.added.year}
           </p>
 
           <p style={{ margin: "0 0 12px" }}>
@@ -197,9 +230,7 @@ function App() {
             ...
           </p>
 
-          <button onClick={() => openListing(property)}>
-            View Listing
-          </button>
+          <button onClick={() => openListing(property)}>View Listing</button>
 
           <button
             onClick={() => saveListing(property)}

@@ -5,12 +5,14 @@ function TypeFilter({
   minBedsValue,
   maxBedsValue,
   postcodeValue,
+  addedAfterValue,
   onTypeChange,
   onMinPriceChange,
   onMaxPriceChange,
   onMinBedsChange,
   onMaxBedsChange,
   onPostcodeChange,
+  onAddedAfterChange,
 }) {
   return (
     <div style={{ marginBottom: "16px" }}>
@@ -80,6 +82,17 @@ function TypeFilter({
           value={postcodeValue}
           onChange={(e) => onPostcodeChange(e.target.value)}
           placeholder="e.g. BR5"
+        />
+      </label>
+
+      <br /><br />
+
+      <label>
+        Added after:{" "}
+        <input
+          type="date"
+          value={addedAfterValue}
+          onChange={(e) => onAddedAfterChange(e.target.value)}
         />
       </label>
     </div>
