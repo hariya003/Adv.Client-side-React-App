@@ -20,6 +20,8 @@ function TypeFilter({
   onMaxBedsChange,
   onPostcodeChange,
   onAddedAfterChange,
+  onSearch,
+  onClear
 }) {
   return (
     <div style={{ marginBottom: "16px" }}>
@@ -33,34 +35,22 @@ function TypeFilter({
       <br /><br />
 
       <label>Min Price</label>
-      <NumberPicker
-        value={minPriceValue}
-        onChange={onMinPriceChange}
-      />
+      <NumberPicker value={minPriceValue} onChange={onMinPriceChange} />
 
       <br /><br />
 
       <label>Max Price</label>
-      <NumberPicker
-        value={maxPriceValue}
-        onChange={onMaxPriceChange}
-      />
+      <NumberPicker value={maxPriceValue} onChange={onMaxPriceChange} />
 
       <br /><br />
 
       <label>Min Bedrooms</label>
-      <NumberPicker
-        value={minBedsValue}
-        onChange={onMinBedsChange}
-      />
+      <NumberPicker value={minBedsValue} onChange={onMinBedsChange} />
 
       <br /><br />
 
       <label>Max Bedrooms</label>
-      <NumberPicker
-        value={maxBedsValue}
-        onChange={onMaxBedsChange}
-      />
+      <NumberPicker value={maxBedsValue} onChange={onMaxBedsChange} />
 
       <br /><br />
 
@@ -77,6 +67,20 @@ function TypeFilter({
         value={addedAfterValue}
         onChange={onAddedAfterChange}
       />
+
+      <br /><br />
+
+      <button type="button" onClick={onSearch}>
+        Search
+      </button>
+
+      <button
+        type="button"
+        onClick={onClear}
+        style={{ marginLeft: "10px" }}
+      >
+        Clear
+      </button>
     </div>
   );
 }

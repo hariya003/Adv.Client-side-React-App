@@ -7,20 +7,32 @@ import SavedList from "./components/SavedList";
 function App() {
   const allProperties = propertiesData.properties;
 
+  // ✅ react-widgets friendly state (NumberPicker => number|null, DatePicker => Date|null)
   const [selectedType, setSelectedType] = useState("Any");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [minBeds, setMinBeds] = useState("");
-  const [maxBeds, setMaxBeds] = useState("");
+  const [minPrice, setMinPrice] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(null);
+  const [minBeds, setMinBeds] = useState(null);
+  const [maxBeds, setMaxBeds] = useState(null);
   const [postcodeArea, setPostcodeArea] = useState("");
-  const [addedAfter, setAddedAfter] = useState(""); // YYYY-MM-DD from <input type="date" />
+  const [addedAfter, setAddedAfter] = useState(null);
+
+  // ✅ “Search button” behaviour (apply filters only when clicked)
+  const [appliedFilters, setAppliedFilters] = useState({
+    selectedType: "Any",
+    minPrice: null,
+    maxPrice: null,
+    minBeds: null,
+    maxBeds: null,
+    postcodeArea: "",
+    addedAfter: null,
+  });
 
   const [activeListing, setActiveListing] = useState(null);
   const [savedItems, setSavedItems] = useState([]);
   const [isSavedViewOpen, setIsSavedViewOpen] = useState(false);
 
   const visibleProperties = useMemo(() => {
-    const pc = postcodeArea.trim().toLowerCase();
+    const pc = appliedFilters.postcodeArea.trim().toLowerCase();
 
     const monthToIndex = {
       January: 0,
@@ -37,33 +49,34 @@ function App() {
       December: 11,
     };
 
-    const afterDate = addedAfter ? new Date(addedAfter) : null;
-
     return allProperties.filter((property) => {
       const matchesType =
-        selectedType === "Any" || property.type === selectedType;
+        appliedFilters.selectedType === "Any" ||
+        property.type === appliedFilters.selectedType;
 
-      const minP = minPrice === "" ? null : Number(minPrice);
-      const maxP = maxPrice === "" ? null : Number(maxPrice);
-      const matchesMinPrice = minP === null || property.price >= minP;
-      const matchesMaxPrice = maxP === null || property.price <= maxP;
+      const matchesMinPrice =
+        appliedFilters.minPrice == null || property.price >= appliedFilters.minPrice;
 
-      const minB = minBeds === "" ? null : Number(minBeds);
-      const maxB = maxBeds === "" ? null : Number(maxBeds);
-      const matchesMinBeds = minB === null || property.bedrooms >= minB;
-      const matchesMaxBeds = maxB === null || property.bedrooms <= maxB;
+      const matchesMaxPrice =
+        appliedFilters.maxPrice == null || property.price <= appliedFilters.maxPrice;
+
+      const matchesMinBeds =
+        appliedFilters.minBeds == null || property.bedrooms >= appliedFilters.minBeds;
+
+      const matchesMaxBeds =
+        appliedFilters.maxBeds == null || property.bedrooms <= appliedFilters.maxBeds;
 
       const matchesPostcode =
         pc === "" || property.location.toLowerCase().includes(pc);
 
       const matchesAddedAfter = (() => {
-        if (!afterDate) return true;
+        if (!appliedFilters.addedAfter) return true;
 
         const mIndex = monthToIndex[property.added.month];
-        if (mIndex === undefined) return true; // fail-safe: if month text is unexpected, don't hide items
+        if (mIndex === undefined) return true;
 
         const propDate = new Date(property.added.year, mIndex, property.added.day);
-        return propDate >= afterDate;
+        return propDate >= appliedFilters.addedAfter;
       })();
 
       return (
@@ -76,16 +89,7 @@ function App() {
         matchesAddedAfter
       );
     });
-  }, [
-    allProperties,
-    selectedType,
-    minPrice,
-    maxPrice,
-    minBeds,
-    maxBeds,
-    postcodeArea,
-    addedAfter,
-  ]);
+  }, [allProperties, appliedFilters]);
 
   function openSavedView() {
     setIsSavedViewOpen(true);
@@ -114,6 +118,40 @@ function App() {
 
   function isSaved(id) {
     return savedItems.some((x) => x.id === id);
+  }
+
+  // ✅ Search button applies current UI state into appliedFilters
+  function handleSearch() {
+    setAppliedFilters({
+      selectedType,
+      minPrice,
+      maxPrice,
+      minBeds,
+      maxBeds,
+      postcodeArea,
+      addedAfter,
+    });
+  }
+
+  // ✅ Clear button resets UI state AND appliedFilters
+  function handleClear() {
+    setSelectedType("Any");
+    setMinPrice(null);
+    setMaxPrice(null);
+    setMinBeds(null);
+    setMaxBeds(null);
+    setPostcodeArea("");
+    setAddedAfter(null);
+
+    setAppliedFilters({
+      selectedType: "Any",
+      minPrice: null,
+      maxPrice: null,
+      minBeds: null,
+      maxBeds: null,
+      postcodeArea: "",
+      addedAfter: null,
+    });
   }
 
   if (isSavedViewOpen) {
@@ -159,15 +197,7 @@ function App() {
       </button>
 
       <button
-        onClick={() => {
-          setSelectedType("Any");
-          setMinPrice("");
-          setMaxPrice("");
-          setMinBeds("");
-          setMaxBeds("");
-          setPostcodeArea("");
-          setAddedAfter("");
-        }}
+        onClick={handleClear}
         style={{ marginLeft: "10px", marginBottom: "12px" }}
       >
         Clear Filters
@@ -188,6 +218,8 @@ function App() {
         onMaxBedsChange={setMaxBeds}
         onPostcodeChange={setPostcodeArea}
         onAddedAfterChange={setAddedAfter}
+        onSearch={handleSearch}
+        onClear={handleClear}
       />
 
       <p>
