@@ -1,39 +1,45 @@
+import ImageGallery from "./ImageGallery";
+
 function ListingView({ listing, onReturn }) {
   if (!listing) return null;
 
+  const allImages =
+    listing.images && listing.images.length > 0
+      ? listing.images
+      : listing.picture
+      ? [listing.picture]
+      : [];
+
   return (
-    <div style={{ border: "1px solid #ccc", padding: "16px" }}>
+    <div style={{ padding: "20px" }}>
       <button onClick={onReturn} style={{ marginBottom: "12px" }}>
-        Back to Results
+        ← Back to results
       </button>
 
-      <h2>{listing.type}</h2>
+      <h2>
+        {listing.type} — £{listing.price.toLocaleString()}
+      </h2>
+
       <p>
         <strong>Location:</strong> {listing.location}
       </p>
+
       <p>
-        <strong>Bedrooms:</strong> {listing.bedrooms}
-      </p>
-      <p>
-        <strong>Price:</strong> £{listing.price.toLocaleString()}
-      </p>
-      <p>
+        <strong>Bedrooms:</strong> {listing.bedrooms} |{" "}
         <strong>Tenure:</strong> {listing.tenure}
       </p>
 
-      <h3>Description</h3>
-      <p>{listing.description}</p>
+      <p>
+        <strong>Added:</strong>{" "}
+        {listing.added.month} {listing.added.day},{" "}
+        {listing.added.year}
+      </p>
 
-      <h3>Image</h3>
-      {listing.picture ? (
-        <img
-          src={listing.picture}
-          alt={listing.type}
-          style={{ width: "100%", maxWidth: "520px" }}
-        />
-      ) : (
-        <p>No image available</p>
-      )}
+      <ImageGallery images={allImages} />
+
+      <p style={{ marginTop: "16px", lineHeight: "1.6" }}>
+        {String(listing.description || "").replace(/<br\s*\/?>/gi, " ")}
+      </p>
     </div>
   );
 }
