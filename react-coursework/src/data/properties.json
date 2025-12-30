@@ -17,6 +17,8 @@
         "images/prop1/5.png",
         "images/prop1/6.png"
       ],
+      "floorplan": "images/prop1/floorplan.png",
+      "url": "properties/prop1.html",
       "added": { "month": "October", "day": 12, "year": 2022 }
     },
 
@@ -26,7 +28,7 @@
       "bedrooms": 2,
       "price": 399995,
       "tenure": "Freehold",
-      "description": "Presented in excellent decorative order throughout is this two double bedroom, two bathroom, garden flat...",
+      "description": "Presented in excellent decorative order throughout is this two double bedroom, two bathroom, garden flat. The modern fitted kitchen is open plan to the living room which boasts solid wooden floors and includes integrated appliances including a dishwasher and a washing machine. This large open plan benefits from bi folding doors onto a secluded private courtyard garden...",
       "location": "Crofton Road Orpington BR6",
       "picture": "images/prop2/1.png",
       "images": [
@@ -37,6 +39,8 @@
         "images/prop2/5.png",
         "images/prop2/6.png"
       ],
+      "floorplan": "images/prop2/floorplan.png",
+      "url": "properties/prop2.html",
       "added": { "month": "September", "day": 14, "year": 2022 }
     },
 
@@ -46,7 +50,7 @@
       "bedrooms": 4,
       "price": 665000,
       "tenure": "Freehold",
-      "description": "Well presented four bedroom family home situated close to local schools, bus routes and commuter links...",
+      "description": "Well presented four bedroom family home ideally situated close to local schools, public transport links and commuter routes. The accommodation comprises a bright and airy reception room, a separate dining area suitable for family gatherings and a fitted kitchen providing direct access to the rear garden. Upstairs offers four generously sized bedrooms along with a modern family bathroom. The property further benefits from double glazing, gas central heating and off-street parking, making it a comfortable and practical choice for growing families.",
       "location": "Station Road, Bromley BR1",
       "picture": "images/prop3/1.png",
       "images": [
@@ -57,6 +61,8 @@
         "images/prop3/5.png",
         "images/prop3/6.png"
       ],
+      "floorplan": "images/prop3/floorplan.png",
+      "url": "properties/prop3.html",
       "added": { "month": "February", "day": 9, "year": 2023 }
     },
 
@@ -66,7 +72,7 @@
       "bedrooms": 1,
       "price": 289950,
       "tenure": "Leasehold",
-      "description": "A modern one bedroom apartment set within a well maintained development...",
+      "description": "A modern one bedroom apartment set within a well-maintained residential development, ideally located for local amenities and excellent transport connections. The property features an open plan living and kitchen area designed to maximise space and natural light, a comfortable double bedroom and a contemporary bathroom suite. Additional benefits include secure entry, good storage options and a convenient location, making this property an ideal first-time purchase or investment opportunity.",
       "location": "Camden Road, London NW1",
       "picture": "images/prop4/1.png",
       "images": [
@@ -77,6 +83,8 @@
         "images/prop4/5.png",
         "images/prop4/6.png"
       ],
+      "floorplan": "images/prop4/floorplan.png",
+      "url": "properties/prop4.html",
       "added": { "month": "April", "day": 18, "year": 2023 }
     },
 
@@ -86,7 +94,7 @@
       "bedrooms": 2,
       "price": 435000,
       "tenure": "Freehold",
-      "description": "Charming two bedroom house located within easy reach of shops, parks and local transport...",
+      "description": "Charming two bedroom house located within easy reach of local shops, green spaces and transport links. The accommodation includes a welcoming reception room, a fitted kitchen with ample storage and access to a private rear garden. To the first floor are two well-proportioned bedrooms and a family bathroom. This property offers an excellent opportunity for first-time buyers or those looking to downsize, with a practical layout and desirable residential setting.",
       "location": "Manor Way, Beckenham BR3",
       "picture": "images/prop5/1.png",
       "images": [
@@ -97,6 +105,8 @@
         "images/prop5/5.png",
         "images/prop5/6.png"
       ],
+      "floorplan": "images/prop5/floorplan.png",
+      "url": "properties/prop5.html",
       "added": { "month": "August", "day": 3, "year": 2023 }
     },
 
@@ -106,7 +116,7 @@
       "bedrooms": 3,
       "price": 515000,
       "tenure": "Leasehold",
-      "description": "Spacious three bedroom apartment presented in good order throughout...",
+      "description": "Spacious three bedroom apartment presented in good decorative order throughout. The accommodation comprises a generous reception room, a fitted kitchen with modern appliances, three well-sized bedrooms and a family bathroom. Additional benefits may include lift access, residents parking where available and a convenient location close to commuter routes and local amenities. This property offers flexible living space suitable for families or professionals alike.",
       "location": "Riverside Quarter, Manchester M1",
       "picture": "images/prop6/1.png",
       "images": [
@@ -117,6 +127,8 @@
         "images/prop6/5.png",
         "images/prop6/6.png"
       ],
+      "floorplan": "images/prop6/floorplan.png",
+      "url": "properties/prop6.html",
       "added": { "month": "October", "day": 11, "year": 2024 }
     },
 
@@ -126,7 +138,7 @@
       "bedrooms": 5,
       "price": 895000,
       "tenure": "Freehold",
-      "description": "Substantial five bedroom detached home offering versatile living space...",
+      "description": "Substantial five bedroom detached family home offering versatile and well-planned living accommodation arranged over two floors. The property includes multiple reception rooms, a large kitchen and dining area ideal for entertaining, and generously sized bedrooms throughout. Externally, the property benefits from driveway parking and a landscaped rear garden. Located in a sought-after area, this home is well suited to larger families seeking space, comfort and convenience.",
       "location": "Oak View, Leeds LS1",
       "picture": "images/prop7/1.png",
       "images": [
@@ -137,6 +149,8 @@
         "images/prop7/5.png",
         "images/prop7/6.png"
       ],
+      "floorplan": "images/prop7/floorplan.png",
+      "url": "properties/prop7.html",
       "added": { "month": "November", "day": 20, "year": 2024 }
     }
   ]

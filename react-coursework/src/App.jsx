@@ -22,9 +22,18 @@ function App() {
 
   const visibleProperties = useMemo(() => {
     const monthMap = {
-      January: 0, February: 1, March: 2, April: 3,
-      May: 4, June: 5, July: 6, August: 7,
-      September: 8, October: 9, November: 10, December: 11
+      January: 0,
+      February: 1,
+      March: 2,
+      April: 3,
+      May: 4,
+      June: 5,
+      July: 6,
+      August: 7,
+      September: 8,
+      October: 9,
+      November: 10,
+      December: 11,
     };
 
     return allProperties.filter((p) => {
@@ -67,7 +76,7 @@ function App() {
       minBeds,
       maxBeds,
       postcode: postcodeArea,
-      addedAfter
+      addedAfter,
     });
   }
 
@@ -143,14 +152,49 @@ function App() {
       <p>Showing {visibleProperties.length} properties</p>
 
       {visibleProperties.map((p) => (
-        <div key={p.id} style={{ border: "1px solid #ccc", padding: "12px", marginBottom: "12px" }}>
-          <h2>{p.type}</h2>
-          <p>£{p.price.toLocaleString()}</p>
-          <p>{p.bedrooms} bedrooms</p>
-          <p>{p.location}</p>
+        <div
+          key={p.id}
+          style={{
+            border: "1px solid #fff",
+            padding: "20px",
+            marginBottom: "20px",
+            borderRadius: "6px",
+            background: "#222",
+          }}
+        >
+          <h2 style={{ marginBottom: "8px" }}>{p.type}</h2>
 
-          <button onClick={() => setActiveListing(p)}>View</button>
-          <button onClick={() => saveListing(p)} style={{ marginLeft: "10px" }}>
+          <p style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "10px" }}>
+            £{p.price.toLocaleString()}
+          </p>
+
+          <p style={{ marginBottom: "6px" }}>
+            <strong>Bedrooms:</strong> {p.bedrooms} |{" "}
+            <strong>Tenure:</strong> {p.tenure}
+          </p>
+
+          <p style={{ marginBottom: "6px" }}>
+            <strong>Location:</strong> {p.location}
+          </p>
+
+          <p style={{ marginBottom: "6px" }}>
+            <strong>Added:</strong>{" "}
+            {p.added.month} {p.added.day}, {p.added.year}
+          </p>
+
+          <p style={{ marginTop: "10px", marginBottom: "14px" }}>
+            {String(p.description)
+              .replace(/<br\s*\/?>/gi, " ")
+              .slice(0, 180)}
+            ...
+          </p>
+
+          <button onClick={() => setActiveListing(p)}>View Details</button>
+
+          <button
+            onClick={() => saveListing(p)}
+            style={{ marginLeft: "10px" }}
+          >
             ❤️ Save
           </button>
         </div>
