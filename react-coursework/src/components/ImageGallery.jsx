@@ -14,12 +14,12 @@ function ImageGallery({ images = [] }) {
         alt="Main property"
         style={{
           width: "100%",
-          maxWidth: "750px",
-          height: "380px",
+          maxWidth: "700px",
+          height: "320px",
           objectFit: "cover",
-          borderRadius: "10px",
-          border: "1px solid #ccc",
-          display: "block"
+          borderRadius: "12px",
+          border: "1px solid rgba(0,0,0,0.15)",
+          display: "block",
         }}
       />
 
@@ -28,7 +28,7 @@ function ImageGallery({ images = [] }) {
           display: "flex",
           gap: "10px",
           flexWrap: "wrap",
-          marginTop: "10px"
+          marginTop: "10px",
         }}
       >
         {safeImages.map((img) => (
@@ -38,15 +38,15 @@ function ImageGallery({ images = [] }) {
             alt="Thumbnail"
             onClick={() => setSelected(img)}
             style={{
-              width: "90px",
-              height: "70px",
+              width: "76px",
+              height: "56px",
               objectFit: "cover",
-              borderRadius: "8px",
+              borderRadius: "10px",
               cursor: "pointer",
               border:
                 selected === img
-                  ? "3px solid #00bcd4"
-                  : "1px solid #aaa"
+                  ? "3px solid #6ccf8e" // green highlight
+                  : "1px solid rgba(0,0,0,0.25)",
             }}
           />
         ))}
@@ -67,7 +67,7 @@ function ImageGallery({ images = [] }) {
             justifyContent: "center",
             alignItems: "center",
             padding: "20px",
-            zIndex: 9999
+            zIndex: 9999,
           }}
         >
           <div
@@ -79,14 +79,15 @@ function ImageGallery({ images = [] }) {
               width: "100%",
               maxWidth: "900px",
               maxHeight: "80vh",
-              overflow: "auto"
+              overflow: "auto",
             }}
           >
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                alignItems: "center"
+                alignItems: "center",
+                gap: "12px",
               }}
             >
               <h3 style={{ margin: 0 }}>All images</h3>
@@ -97,9 +98,8 @@ function ImageGallery({ images = [] }) {
               style={{
                 marginTop: "12px",
                 display: "grid",
-                gridTemplateColumns:
-                  "repeat(auto-fill, minmax(180px, 1fr))",
-                gap: "10px"
+                gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+                gap: "10px",
               }}
             >
               {safeImages.map((img) => (
@@ -109,9 +109,9 @@ function ImageGallery({ images = [] }) {
                   alt="All"
                   style={{
                     width: "100%",
-                    height: "140px",
+                    height: "120px",
                     objectFit: "cover",
-                    borderRadius: "10px"
+                    borderRadius: "10px",
                   }}
                 />
               ))}

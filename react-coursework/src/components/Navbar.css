@@ -1,0 +1,116 @@
+.filter-card {
+  background: var(--deep);
+  border-radius: 22px;
+  padding: 22px 26px 26px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  color: #fff;
+}
+
+.filter-head {
+  margin-bottom: 16px;
+}
+
+.filter-title {
+  font-size: 26px;
+  font-weight: 900;
+  margin: 0 0 6px;
+}
+
+.filter-subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.35;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 1100px) {
+  .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-label {
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.filter-card .rw-widget {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  min-height: 44px;
+}
+
+.filter-card .rw-widget:hover {
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.filter-card .rw-widget.rw-state-focus,
+.filter-card .rw-widget:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(108, 207, 142, 0.25);
+}
+
+.filter-card .rw-input,
+.filter-card .rw-widget-input {
+  color: #0b241b !important;
+  background: transparent !important;
+  padding: 10px 12px;
+  font-size: 15px;
+}
+
+.filter-card .rw-placeholder {
+  color: rgba(11, 36, 27, 0.55) !important;
+}
+
+.filter-card .rw-btn,
+.filter-card .rw-button,
+.filter-card .rw-select {
+  background: transparent;
+  border: 0;
+  color: #0b241b;
+}
+
+.filter-actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: none;
+  padding: 12px 22px;
+  font-weight: 900;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.btn-search {
+  background: var(--accent);
+  color: #083b26;
+}
+
+.btn-clear {
+  background: #ffffff;
+  color: var(--deep);
+}

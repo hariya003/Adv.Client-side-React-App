@@ -1,27 +1,51 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 function ListingView({ listing, onReturn }) {
-  const allImages =
-    listing.images && listing.images.length > 0
-      ? listing.images
-      : listing.picture
-      ? [listing.picture]
-      : [];
+  const allImages = useMemo(() => {
+    if (listing?.images && listing.images.length > 0) return listing.images;
+    if (listing?.picture) return [listing.picture];
+    return [];
+  }, [listing]);
 
   const [selectedImage, setSelectedImage] = useState(allImages[0] || "");
   const [showAll, setShowAll] = useState(false);
 
+  const floorPlanFile =
+    listing?.floorplan ||
+    listing?.floorPlan ||
+    listing?.floor_plan ||
+    listing?.floorPlanImage ||
+    "";
+
   const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(
-    listing.location
+    listing.location || ""
   )}&output=embed`;
 
   return (
-    <div style={{ padding: "20px" }}>
-      <button onClick={onReturn}>← Back</button>
+    <div
+      style={{
+        padding: "20px",
+        maxWidth: "1100px",
+        margin: "0 auto",
+      }}
+    >
+      <button
+        onClick={onReturn}
+        style={{
+          padding: "10px 14px",
+          borderRadius: "10px",
+          border: "1px solid rgba(15,61,46,0.25)",
+          background: "#fff",
+          cursor: "pointer",
+          fontWeight: 800,
+        }}
+      >
+        ← Back
+      </button>
 
-      <h2 style={{ marginTop: "12px" }}>
+      <h2 style={{ marginTop: "14px" }}>
         {listing.type} — £{listing.price.toLocaleString()}
       </h2>
 
@@ -35,8 +59,8 @@ function ListingView({ listing, onReturn }) {
       </p>
 
       <p>
-        <strong>Added:</strong> {listing.added.month} {listing.added.day},{" "}
-        {listing.added.year}
+        <strong>Added:</strong> {listing.added?.month} {listing.added?.day},{" "}
+        {listing.added?.year}
       </p>
 
       {selectedImage && (
@@ -46,12 +70,12 @@ function ListingView({ listing, onReturn }) {
             alt="Main property"
             style={{
               width: "100%",
-              maxWidth: "800px",
-              height: "380px",
+              maxWidth: "820px",
+              height: "360px",
               objectFit: "cover",
-              borderRadius: "10px",
-              border: "1px solid #ccc",
-              display: "block"
+              borderRadius: "12px",
+              border: "1px solid rgba(0,0,0,0.15)",
+              display: "block",
             }}
           />
 
@@ -60,7 +84,8 @@ function ListingView({ listing, onReturn }) {
               display: "flex",
               gap: "10px",
               flexWrap: "wrap",
-              marginTop: "12px"
+              marginTop: "12px",
+              maxWidth: "820px",
             }}
           >
             {allImages.map((img, index) => (
@@ -70,23 +95,36 @@ function ListingView({ listing, onReturn }) {
                 alt={`Thumbnail ${index + 1}`}
                 onClick={() => setSelectedImage(img)}
                 style={{
-                  width: "90px",
-                  height: "70px",
+                  width: "78px",
+                  height: "58px",
                   objectFit: "cover",
-                  borderRadius: "8px",
+                  borderRadius: "10px",
                   cursor: "pointer",
                   border:
                     selectedImage === img
-                      ? "3px solid #00bcd4"
-                      : "1px solid #aaa"
+                      ? "3px solid #6ccf8e"
+                      : "1px solid rgba(0,0,0,0.25)",
                 }}
               />
             ))}
           </div>
 
-          <button style={{ marginTop: "12px" }} onClick={() => setShowAll(true)}>
-            View all images
-          </button>
+          {allImages.length > 0 && (
+            <button
+              onClick={() => setShowAll(true)}
+              style={{
+                marginTop: "12px",
+                padding: "10px 14px",
+                borderRadius: "10px",
+                border: "1px solid rgba(15,61,46,0.25)",
+                background: "#fff",
+                cursor: "pointer",
+                fontWeight: 800,
+              }}
+            >
+              View all images
+            </button>
+          )}
 
           {showAll && (
             <div
@@ -99,7 +137,7 @@ function ListingView({ listing, onReturn }) {
                 justifyContent: "center",
                 alignItems: "center",
                 padding: "20px",
-                zIndex: 9999
+                zIndex: 9999,
               }}
             >
               <div
@@ -107,31 +145,31 @@ function ListingView({ listing, onReturn }) {
                 style={{
                   background: "#fff",
                   padding: "16px",
-                  borderRadius: "12px",
+                  borderRadius: "14px",
                   width: "100%",
-                  maxWidth: "900px",
-                  maxHeight: "80vh",
-                  overflow: "auto"
+                  maxWidth: "980px",
+                  maxHeight: "82vh",
+                  overflow: "auto",
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    alignItems: "center"
+                    alignItems: "center",
+                    gap: "10px",
                   }}
                 >
                   <h3 style={{ margin: 0 }}>All images</h3>
-
                   <button
                     onClick={() => setShowAll(false)}
                     style={{
-                      padding: "4px 10px",
-                      fontSize: "14px",
-                      borderRadius: "6px",
-                      border: "1px solid #ccc",
-                      background: "#080808ff",
-                      cursor: "pointer"
+                      padding: "10px 14px",
+                      borderRadius: "10px",
+                      border: "1px solid rgba(0,0,0,0.15)",
+                      background: "#fff1f1",
+                      cursor: "pointer",
+                      fontWeight: 900,
                     }}
                   >
                     Close
@@ -142,9 +180,8 @@ function ListingView({ listing, onReturn }) {
                   style={{
                     marginTop: "12px",
                     display: "grid",
-                    gridTemplateColumns:
-                      "repeat(auto-fill, minmax(180px, 1fr))",
-                    gap: "10px"
+                    gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+                    gap: "10px",
                   }}
                 >
                   {allImages.map((img, i) => (
@@ -154,9 +191,9 @@ function ListingView({ listing, onReturn }) {
                       alt={`Image ${i + 1}`}
                       style={{
                         width: "100%",
-                        height: "140px",
+                        height: "130px",
                         objectFit: "cover",
-                        borderRadius: "10px"
+                        borderRadius: "12px",
                       }}
                     />
                   ))}
@@ -167,30 +204,34 @@ function ListingView({ listing, onReturn }) {
         </div>
       )}
 
-      <div style={{ marginTop: "20px" }}>
+      <div style={{ marginTop: "18px" }}>
         <Tabs>
           <TabList>
             <Tab>Description</Tab>
             <Tab>Floor plan</Tab>
-            <Tab>Google map</Tab>
+            <Tab>Map</Tab>
           </TabList>
 
           <TabPanel>
-            <p style={{ lineHeight: "1.7" }}>
+            <p style={{ lineHeight: "1.6" }}>
               {String(listing.description || "").replace(/<br\s*\/?>/gi, " ")}
             </p>
           </TabPanel>
 
           <TabPanel>
-            {listing.floorplan ? (
+            {floorPlanFile ? (
               <img
-                src={`/${listing.floorplan}`}
+                src={`/${floorPlanFile}`}
                 alt="Floor plan"
                 style={{
                   width: "100%",
-                  maxWidth: "800px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px"
+                  maxWidth: "820px",
+                  maxHeight: "520px",
+                  objectFit: "contain",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  background: "#fff",
+                  display: "block",
                 }}
               />
             ) : (
@@ -199,7 +240,17 @@ function ListingView({ listing, onReturn }) {
           </TabPanel>
 
           <TabPanel>
-            <div style={{ width: "100%", maxWidth: "850px", height: "360px" }}>
+            <div
+              style={{
+                width: "100%",
+                maxWidth: "900px",
+                height: "340px",
+                borderRadius: "12px",
+                overflow: "hidden",
+                border: "1px solid rgba(0,0,0,0.15)",
+                background: "#fff",
+              }}
+            >
               <iframe
                 title="Google map"
                 src={mapUrl}

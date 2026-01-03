@@ -1,53 +1,71 @@
-function SavedList({ items, onRemove, onOpenListing, onBack }) {
+function SavedList({
+  items,
+  onRemove,
+  onClear,
+  onView,
+  onDragStartSaved,
+  onDropAddToSaved,
+  onDropRemoveSaved,
+}) {
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Saved Listings</h1>
+    <div
+      className="saved-panel"
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={onDropAddToSaved}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
+        <h3 style={{ margin: 0 }}>Saved ({items.length})</h3>
 
-      <button onClick={onBack} style={{ marginBottom: "12px" }}>
-        Back to Search
-      </button>
+        <button
+          onClick={onClear}
+          disabled={items.length === 0}
+          style={{
+            border: "1px solid rgba(15,61,46,0.2)",
+            background: "#f3faf6",
+            color: "#0f3d2e",
+            padding: "8px 12px",
+            borderRadius: "10px",
+            fontWeight: 900,
+            cursor: "pointer",
+          }}
+        >
+          Clear all
+        </button>
+      </div>
 
-      <p>
-        Total saved: <strong>{items.length}</strong>
+      <p className="saved-empty" style={{ marginTop: 8 }}>
+        Drag a property card here to save.
       </p>
 
       {items.length === 0 ? (
-        <p>No saved listings yet.</p>
+        <p className="saved-empty">No saved properties</p>
       ) : (
-        items.map((item) => (
+        items.map((p) => (
           <div
-            key={item.id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "12px",
-              marginBottom: "12px",
-            }}
+            key={p.id}
+            className="saved-item"
+            draggable
+            onDragStart={(e) => onDragStartSaved(e, p)}
           >
-            <h2>{item.type}</h2>
-            <p>
-              <strong>Location:</strong> {item.location}
-            </p>
-            <p>
-              <strong>Bedrooms:</strong> {item.bedrooms}
-            </p>
-            <p>
-              <strong>Price:</strong> £{item.price.toLocaleString()}
-            </p>
+            <strong>{p.type}</strong>
+            <div className="meta">{p.location}</div>
 
-            <button type="button" onClick={() => onRemove(item.id)}>
-              Remove
-            </button>
-
-            <button
-              type="button"
-              onClick={() => onOpenListing(item)}
-              style={{ marginLeft: "10px" }}
-            >
-              View Listing
-            </button>
+            <div className="saved-actions">
+              <button onClick={() => onView(p)}>View</button>
+              <button onClick={() => onRemove(p.id)}>Delete</button>
+            </div>
           </div>
         ))
       )}
+
+      {/* ✅ remove zone */}
+      <div
+        className="removeZone"
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={onDropRemoveSaved}
+      >
+        🗑️ Drag a saved item here to remove
+      </div>
     </div>
   );
 }
