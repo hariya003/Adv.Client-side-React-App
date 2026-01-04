@@ -35,6 +35,9 @@ a {
   text-decoration: none;
 }
 
+/* =========================
+   Header
+========================= */
 .site-header {
   position: sticky;
   top: 0;
@@ -92,6 +95,9 @@ a {
   font-size: 13px;
 }
 
+/* =========================
+   Shell / Layout
+========================= */
 .app-shell {
   max-width: 1280px;
   margin: 0 auto;
@@ -123,6 +129,9 @@ a {
   }
 }
 
+/* =========================
+   Filters (Navbar)
+========================= */
 .filter-card {
   background: var(--deep);
   border-radius: 18px;
@@ -210,6 +219,7 @@ a {
   color: var(--deep);
 }
 
+/* React Widgets inside navbar */
 .filter-card .rw-widget,
 .filter-card .rw-widget * {
   font-family: inherit;
@@ -271,6 +281,9 @@ a {
   background: rgba(108, 207, 142, 0.14);
 }
 
+/* =========================
+   Property list
+========================= */
 .property-list {
   flex: 3;
   min-width: 0;
@@ -306,13 +319,53 @@ a {
   border-radius: 14px;
 }
 
+/* ✅ HORIZONTAL CARD WITH IMAGE */
 .property-card {
   background: var(--card);
   color: #fff;
   border-radius: 18px;
-  padding: 18px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: var(--shadow);
+
+  display: flex;
+  gap: 16px;
+  padding: 18px;
+  align-items: stretch;
+}
+
+/* left image box */
+.property-card__media {
+  flex: 0 0 280px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.property-card__img {
+  width: 100%;
+  height: 100%;
+  min-height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.property-card__imgFallback {
+  width: 100%;
+  min-height: 170px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  opacity: 0.85;
+}
+
+/* right content */
+.property-card__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .property-card__top {
@@ -324,39 +377,41 @@ a {
 
 .property-card__title {
   margin: 0;
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 950;
 }
 
 .property-card__price {
   font-weight: 950;
-  font-size: 20px;
+  font-size: 22px;
   opacity: 0.96;
 }
 
 .property-card__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 12px 14px;
+  margin-top: 10px;
   color: rgba(255, 255, 255, 0.92);
 }
 
 .property-card__location {
   margin: 10px 0 0;
-  font-weight: 850;
+  font-weight: 900;
+  font-size: 18px;
 }
 
 .property-card__desc {
   margin: 10px 0 0;
   line-height: 1.5;
   opacity: 0.95;
+  max-width: 78ch;
 }
 
 .btnRow {
-  margin-top: 14px;
+  margin-top: 16px;
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
@@ -364,8 +419,8 @@ a {
   border: 0;
   background: rgba(255, 255, 255, 0.92);
   color: var(--deep);
-  padding: 10px 14px;
-  border-radius: 12px;
+  padding: 12px 18px;
+  border-radius: 14px;
   font-weight: 950;
   cursor: pointer;
 }
@@ -378,8 +433,8 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.55);
   background: transparent;
   color: #fff;
-  padding: 10px 14px;
-  border-radius: 12px;
+  padding: 12px 18px;
+  border-radius: 14px;
   font-weight: 950;
   cursor: pointer;
 }
@@ -389,6 +444,25 @@ a {
   cursor: not-allowed;
 }
 
+/* ✅ Responsive: stack image on small screens */
+@media (max-width: 720px) {
+  .property-card {
+    flex-direction: column;
+  }
+
+  .property-card__media {
+    flex: 0 0 auto;
+  }
+
+  .property-card__img,
+  .property-card__imgFallback {
+    min-height: 210px;
+  }
+}
+
+/* =========================
+   Saved panel
+========================= */
 .saved-panel {
   flex: 1;
   min-width: 280px;
@@ -504,6 +578,9 @@ a {
   text-align: center;
 }
 
+/* =========================
+   About section
+========================= */
 .about {
   margin-top: 46px;
   background: rgba(255, 255, 255, 0.72);
@@ -608,6 +685,9 @@ a {
   }
 }
 
+/* =========================
+   Details page
+========================= */
 .details-page {
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -671,6 +751,9 @@ a {
   color: rgba(0, 0, 0, 0.78);
 }
 
+/* =========================
+   Gallery
+========================= */
 .gallery {
   margin-top: 14px;
 }
@@ -770,6 +853,9 @@ a {
   border-radius: 12px;
 }
 
+/* =========================
+   Footer
+========================= */
 .site-footer {
   margin-top: 26px;
   background: var(--deep);

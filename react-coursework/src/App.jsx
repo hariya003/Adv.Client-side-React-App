@@ -37,7 +37,6 @@ function App() {
         JSON.stringify(savedItems)
       );
     } catch {
-      // ignore
     }
   }, [savedItems]);
 
@@ -238,6 +237,7 @@ function App() {
                   (p) => String(p.id) === String(property.id)
                 );
                 const addedLabel = `${property.added.month} ${property.added.day}, ${property.added.year}`;
+                const imgSrc = property.picture ? `/${property.picture}` : "";
 
                 return (
                   <article
@@ -246,49 +246,66 @@ function App() {
                     draggable
                     onDragStart={(e) => onDragStartProperty(e, property)}
                   >
-                    <div className="property-card__top">
-                      <h3 className="property-card__title">{property.type}</h3>
-                      <div className="property-card__price">
-                        £{property.price.toLocaleString()}
+                    <div className="property-card__media">
+                      {imgSrc ? (
+                        <img
+                          src={imgSrc}
+                          alt={`${property.type} thumbnail`}
+                          className="property-card__img"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="property-card__imgFallback">
+                          No image
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="property-card__body">
+                      <div className="property-card__top">
+                        <h3 className="property-card__title">{property.type}</h3>
+                        <div className="property-card__price">
+                          £{property.price.toLocaleString()}
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="property-card__meta">
-                      <span>
-                        <strong>Bedrooms:</strong> {property.bedrooms}
-                      </span>
-                      <span>
-                        <strong>Tenure:</strong> {property.tenure}
-                      </span>
-                      <span>
-                        <strong>Added:</strong> {addedLabel}
-                      </span>
-                    </div>
+                      <div className="property-card__meta">
+                        <span>
+                          <strong>Bedrooms:</strong> {property.bedrooms}
+                        </span>
+                        <span>
+                          <strong>Tenure:</strong> {property.tenure}
+                        </span>
+                        <span>
+                          <strong>Added:</strong> {addedLabel}
+                        </span>
+                      </div>
 
-                    <p className="property-card__location">{property.location}</p>
+                      <p className="property-card__location">{property.location}</p>
 
-                    <p className="property-card__desc">
-                      {String(property.description || "").substring(0, 120)}…
-                    </p>
+                      <p className="property-card__desc">
+                        {String(property.description || "").substring(0, 120)}…
+                      </p>
 
-                    <div className="btnRow">
-                      <button
-                        className="btn-solid"
-                        type="button"
-                        onClick={() => setActiveListing(property)}
-                      >
-                        View Details
-                      </button>
+                      <div className="btnRow">
+                        <button
+                          className="btn-solid"
+                          type="button"
+                          onClick={() => setActiveListing(property)}
+                        >
+                          View Details
+                        </button>
 
-                      <button
-                        className="btn-ghost"
-                        type="button"
-                        onClick={() => saveListing(property)}
-                        disabled={isSaved}
-                        title="You can also drag the card into Saved"
-                      >
-                        ❤️ {isSaved ? "Saved" : "Save"}
-                      </button>
+                        <button
+                          className="btn-ghost"
+                          type="button"
+                          onClick={() => saveListing(property)}
+                          disabled={isSaved}
+                          title="You can also drag the card into Saved"
+                        >
+                          ❤️ {isSaved ? "Saved" : "Save"}
+                        </button>
+                      </div>
                     </div>
                   </article>
                 );
@@ -363,68 +380,60 @@ function App() {
 
         <section id="about" className="about">
           <div className="about-head">
-            <h2 className="about-title">About Property Point</h2>
+            <h2 className="about-title">Your property journey</h2>
             <p className="about-lead">
-              Property Point is a client-side React application for browsing property
-              listings, applying advanced filters, viewing details with an image gallery
-              + tabs and managing saved favourites using both button clicks and drag & drop.
+              Browse listings like a real estate portal, open details in one click,
+              and build your shortlist using favourites.
             </p>
           </div>
 
           <div className="about-grid">
             <div className="about-card">
-              <h3>What you can do</h3>
+              <h3>1) Discover</h3>
               <ul>
-                <li>Filter by type, price range, bedrooms, postcode/location.</li>
-                <li>
-                  Filter by <strong>Date Added</strong> (After / Before to form “between”).
-                </li>
-                <li>Open property details with tabs (Description / Floor plan / Map).</li>
-                <li>Browse a gallery (thumbnails + “View all images” modal).</li>
+                <li>Scan through listings with a clean layout.</li>
+                <li>See key info at a glance: beds, tenure, added date.</li>
+                <li>Use postcode search to narrow quickly.</li>
               </ul>
             </div>
 
             <div className="about-card">
-              <h3>Saved / Favourites</h3>
+              <h3>2) Compare</h3>
               <ul>
-                <li>Save using the <strong>❤️ Save</strong> button.</li>
-                <li>Save using drag & drop (drag a card into the Saved panel).</li>
-                <li>Remove using Delete or drag a saved item into the remove zone.</li>
-                <li>Saved items are stored in localStorage (persist on refresh).</li>
+                <li>Open <strong>View Details</strong> for deeper info.</li>
+                <li>Switch tabs for description, floor plan and map.</li>
+                <li>Browse images using the gallery + modal.</li>
               </ul>
             </div>
 
             <div className="about-card">
-              <h3>Design + Security</h3>
+              <h3>3) Shortlist</h3>
               <ul>
-                <li>Responsive layout switches below iPad landscape width.</li>
-                <li>Consistent green theme, spacing, and cards for a “real site” feel.</li>
-                <li>Map embed uses encodeURIComponent for safe URL building.</li>
-                <li>Content Security Policy (CSP) restricts what can load.</li>
+                <li>Save favourites using ❤️ or drag & drop.</li>
+                <li>Manage your shortlist in the Saved panel.</li>
+                <li>Remove items with Delete or drag-to-bin.</li>
               </ul>
             </div>
           </div>
 
           <div className="about-cta">
             <div>
-              <h3 className="about-cta-title">Quick guide</h3>
+              <h3 className="about-cta-title">Tip</h3>
               <p className="about-cta-text">
-                Use the filters to search, open “View Details”, then try saving a property
-                using both methods (button + drag into Saved).
+                Try saving a property both ways (button + drag) to see the full interaction model.
               </p>
             </div>
 
             <div className="about-tags">
-              <span className="tag">React</span>
-              <span className="tag">Filtering</span>
-              <span className="tag">Tabs</span>
+              <span className="tag">Shortlist</span>
               <span className="tag">Gallery</span>
+              <span className="tag">Tabs</span>
+              <span className="tag">Filters</span>
               <span className="tag">Drag & Drop</span>
-              <span className="tag">Responsive</span>
-              <span className="tag">CSP</span>
             </div>
           </div>
         </section>
+
       </main>
 
       <SiteFooter onNavigate={navigateTo} />
